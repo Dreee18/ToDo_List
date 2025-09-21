@@ -26,6 +26,27 @@ function InputField() {
     );
   };
 
+  const displayTask = (task: string, index: number, completed: boolean) => {
+    return (
+      <li key={index} className={completed ? "completed-task" : ""}>
+        <input
+          type="checkbox"
+          className="completed"
+          checked={completed}
+          onChange={() => toggleTask(index)}
+        />
+        
+        <p>{task}</p>
+
+        <button className="btn_remove" onClick={() => removeTask(index)}>Remove</button>
+      </li>
+    );
+  };
+
+  const removeTask = (index: number) => {
+    setTasks(tasks.filter((_, i) => i !== index));
+  }
+
   return (
     <>
       <form className="input_field" onSubmit={handleAddTask}>
@@ -48,17 +69,9 @@ function InputField() {
       </form>
 
       <ul className="task_list">
-        {tasks.map((task, index) => (
-          <li key={index} className={task.completed ? "completed-task" : ""}>
-            <input
-              type="checkbox"
-              className="completed"
-              checked={task.completed}
-              onChange={() => toggleTask(index)}
-            />
-            {task.text}
-          </li>
-        ))}
+        {tasks.map((task, index) =>
+          displayTask(task.text, index, task.completed)
+        )}
       </ul>
     </>
   );
